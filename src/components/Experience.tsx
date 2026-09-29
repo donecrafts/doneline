@@ -1,29 +1,26 @@
-import { experienceImage } from '../data/content'
+import { images } from '../data/content'
 import { FoodImage } from './FoodImage'
-import { Reveal } from './Reveal'
 
 export function Experience() {
   return (
-    <section className="relative isolate min-h-[34rem] overflow-hidden" aria-labelledby="experience-heading">
+    <section className="experience" aria-labelledby="experience-title">
       <FoodImage
-        src={experienceImage.src}
-        alt={experienceImage.alt}
-        className="absolute inset-0 h-full w-full object-cover"
+        src={images.experience}
+        alt="A dining room set for the evening"
+        className="experience-photo"
       />
-      <div className="photo-scrim" aria-hidden="true" />
-      <div className="relative flex min-h-[34rem] items-center justify-center px-6 py-24">
-        <Reveal className="max-w-2xl text-center">
-          <h2 id="experience-heading" className="section-title on-photo text-balance">
-            More than a meal.
-          </h2>
-          <p className="section-lead on-photo-soft mx-auto">
+      <div className="experience-scrim" aria-hidden="true" />
+      <div className="wrap experience-inner">
+        <div className="experience-copy">
+          <h2 id="experience-title">More than a meal.</h2>
+          <p>
             From the first bite to the last conversation, every detail is designed to make your
             time with us feel special.
           </p>
-          <a href="#contact" className="btn btn-light mt-8">
+          <a className="btn btn-light" href="#contact">
             Reserve a Table
           </a>
-        </Reveal>
+        </div>
       </div>
     </section>
   )

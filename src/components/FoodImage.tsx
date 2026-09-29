@@ -12,8 +12,8 @@ export function FoodImage({ src, alt, className = '', eager = false }: FoodImage
 
   if (failed) {
     return (
-      <div className={`flex items-center justify-center bg-beige px-6 text-center ${className}`}>
-        <span className="font-serif text-xl text-muted">{alt}</span>
+      <div className={`image-fallback ${className}`} role="img" aria-label={alt}>
+        <span>{alt}</span>
       </div>
     )
   }

@@ -1,44 +1,41 @@
-import { heroImage, hoursLine } from '../data/content'
+import { images } from '../data/content'
 import { FoodImage } from './FoodImage'
-import { Reveal } from './Reveal'
 
 export function Hero() {
   return (
-    <section id="home" className="pt-32 pb-10 md:pt-40 md:pb-14">
-      <div className="wrap grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-        <Reveal className="order-2 lg:order-1">
-          <h1 className="display text-balance text-ink">Good food, made beautifully.</h1>
-          <p className="section-lead text-muted">
-            A modern dining experience built around seasonal ingredients, thoughtful cooking, and
-            simple moments worth sharing.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#menu" className="btn btn-primary">
-              Explore Menu
-            </a>
-            <a href="#about" className="btn btn-secondary">
-              Our Story
-            </a>
+    <section className="hero" id="home" aria-labelledby="hero-title">
+      <div className="wrap">
+        <div className="hero-grid">
+          <div className="hero-copy">
+            <p className="eyebrow">Simple food. Beautiful moments.</p>
+            <h1 id="hero-title" className="hero-title">
+              Good food, made beautifully.
+            </h1>
+            <p className="hero-text">
+              A modern dining experience built around seasonal ingredients, thoughtful cooking, and
+              simple moments worth sharing.
+            </p>
+            <div className="hero-actions">
+              <a className="btn btn-primary" href="#menu">
+                Explore Menu
+              </a>
+              <a className="btn btn-outline" href="#about">
+                Our Story
+              </a>
+            </div>
           </div>
-        </Reveal>
 
-        <Reveal className="order-1 lg:order-2" delay={90}>
-          <div className="relative aspect-[5/4] overflow-hidden rounded-3xl border border-line bg-beige lg:aspect-[4/5]">
+          <div className="hero-photo">
             <FoodImage
-              src={heroImage.src}
-              alt={heroImage.alt}
+              src={images.hero}
+              alt="A plated dish being served at the table"
+              className="cover-image"
               eager
-              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
-        </Reveal>
-      </div>
+        </div>
 
-      <div className="wrap mt-12 border-t border-line pt-6 md:mt-16">
-        <p className="flex items-start gap-3 text-sm tracking-wide text-muted">
-          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-peach" aria-hidden="true" />
-          {hoursLine}
-        </p>
+        <p className="hero-meta">Open Tuesday — Sunday · 11:30 AM — 10:00 PM</p>
       </div>
     </section>
   )

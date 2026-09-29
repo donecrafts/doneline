@@ -3,22 +3,23 @@ import { Reveal } from './Reveal'
 
 export function Testimonials() {
   return (
-    <section className="section bg-leaf" aria-labelledby="testimonials-heading">
+    <section className="section" aria-labelledby="testimonials-title">
       <div className="wrap">
         <Reveal>
-          <h2 id="testimonials-heading" className="section-title text-ink">
-            Guests say
-          </h2>
-          <div className="mt-12 grid gap-12 md:mt-14 md:grid-cols-3 md:gap-8">
+          <header className="section-head">
+            <h2 id="testimonials-title" className="section-title">
+              Guests say
+            </h2>
+          </header>
+
+          <div className="quote-grid">
             {testimonials.map((item) => (
-              <blockquote key={item.name} className="border-t border-peach pt-6">
-                <p className="font-serif text-[1.65rem] leading-snug font-medium text-ink italic">
-                  “{item.quote}”
-                </p>
-                <footer className="mt-6 text-xs tracking-[0.18em] text-muted uppercase">
-                  — {item.name}
-                </footer>
-              </blockquote>
+              <figure className="quote" key={item.name}>
+                <blockquote>
+                  <p>&ldquo;{item.quote}&rdquo;</p>
+                </blockquote>
+                <figcaption>— {item.name}</figcaption>
+              </figure>
             ))}
           </div>
         </Reveal>

@@ -1,13 +1,3 @@
-const photo = (id: string, width = 1600) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${width}&q=80`
-
-export const hoursLine = 'Open Tuesday — Sunday · 11:30 AM — 10:00 PM'
-export const hoursDays = 'Tuesday — Sunday'
-export const hoursTime = '11:30 AM — 10:00 PM'
-export const location = 'Wales, UK'
-export const email = 'doneporpor@gmail.com'
-export const xProfile = 'https://x.com/donecraft225'
-
 export const navLinks = [
   { label: 'Home', href: '#home' },
   { label: 'Menu', href: '#menu' },
@@ -16,214 +6,166 @@ export const navLinks = [
   { label: 'Contact', href: '#contact' },
 ] as const
 
-export const footerLinks = [
-  { label: 'Instagram', href: '#instagram', placeholder: true },
-  { label: 'Facebook', href: '#facebook', placeholder: true },
-  { label: 'Contact', href: '#contact', placeholder: false },
-  { label: 'Menu', href: '#menu', placeholder: false },
-] as const
+const photo = (id: string, width: number) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=80`
 
-export const heroImage = {
-  src: photo('1414235077428-338989a2e8c0', 2000),
-  alt: 'A plated dish on a linen-covered restaurant table',
-}
-
-export const aboutImage = {
-  src: photo('1517248135467-4c7edcad34c4', 1800),
-  alt: 'The SAVORÉ dining room set for service',
-}
-
-export const experienceImage = {
-  src: photo('1550966871-3ed3cdb5ed0c', 2200),
-  alt: 'A quietly lit dining room prepared for the evening',
-}
-
-export type FeaturedDish = {
-  name: string
-  description: string
-  price: number
-  image: string
-  alt: string
-}
-
-export const featuredDishes: FeaturedDish[] = [
+export const featuredDishes = [
   {
     name: 'Truffle Tagliatelle',
     description: 'Fresh pasta, parmesan, black truffle',
-    price: 24,
-    image: photo('1621996346565-e3dbc646d9a9', 1400),
-    alt: 'A bowl of fresh tagliatelle with parmesan',
+    price: '$24',
+    image: photo('photo-1551183053-bf91a1d81141', 1200),
+    alt: 'Fresh ribbon pasta with herbs and parmesan',
   },
   {
     name: 'Grilled Salmon',
     description: 'Herbs, lemon, seasonal vegetables',
-    price: 28,
-    image: photo('1467003909585-2f8a72700288', 1400),
-    alt: 'Grilled salmon with lemon and seasonal vegetables',
+    price: '$28',
+    image: photo('photo-1467003909585-2f8a72700288', 1200),
+    alt: 'Grilled salmon with lemon and herbs',
   },
   {
     name: 'Roasted Chicken',
     description: 'Garlic, rosemary, roasted potatoes',
-    price: 22,
-    image: photo('1532550907401-a500c9a57435', 1400),
-    alt: 'Herb chicken with lemon, rosemary, and vegetables',
+    price: '$22',
+    image: photo('photo-1598103442097-8b74394b95c6', 1200),
+    alt: 'Roasted chicken with rosemary and potatoes',
   },
-]
+] as const
 
-export const menuCategories = ['Starters', 'Mains', 'Desserts', 'Drinks'] as const
-export type MenuCategory = (typeof menuCategories)[number]
+export const categories = ['Starters', 'Mains', 'Desserts', 'Drinks'] as const
 
-export type MenuItem = {
-  name: string
-  description: string
-  price: number
-}
+export type MenuCategory = (typeof categories)[number]
 
-export const menu: Record<MenuCategory, MenuItem[]> = {
+export const menu: Record<MenuCategory, { name: string; description: string; price: string }[]> = {
   Starters: [
     {
       name: 'Burrata & Tomatoes',
       description: 'Creamy burrata, heirloom tomatoes, basil oil.',
-      price: 14,
+      price: '$14',
     },
     {
       name: 'Citrus Fennel Salad',
-      description: 'Shaved fennel, orange, soft herbs, olive oil.',
-      price: 12,
+      description: 'Shaved fennel, orange, olive oil, and herbs.',
+      price: '$13',
     },
     {
       name: 'Warm Olives',
-      description: 'Chili, lemon zest, and good olive oil.',
-      price: 8,
+      description: 'Castelvetrano olives, chili, and lemon zest.',
+      price: '$9',
     },
     {
-      name: 'Mushroom Toast',
-      description: 'Wild mushrooms, garlic, country bread.',
-      price: 15,
+      name: 'Market Soup',
+      description: 'Seasonal vegetables, olive oil, and toasted bread.',
+      price: '$12',
     },
   ],
   Mains: [
     {
+      name: 'Truffle Tagliatelle',
+      description: 'Fresh pasta, parmesan, black truffle.',
+      price: '$24',
+    },
+    {
       name: 'Mushroom Risotto',
       description: 'Wild mushrooms, parmesan, herbs.',
-      price: 19,
+      price: '$19',
     },
     {
       name: 'Herb-Crusted Salmon',
       description: 'Seasonal vegetables, lemon butter.',
-      price: 27,
+      price: '$27',
     },
     {
-      name: 'Truffle Tagliatelle',
-      description: 'Fresh pasta, parmesan, black truffle.',
-      price: 24,
+      name: 'Grilled Salmon',
+      description: 'Herbs, lemon, seasonal vegetables.',
+      price: '$28',
     },
     {
       name: 'Roasted Chicken',
       description: 'Garlic, rosemary, roasted potatoes.',
-      price: 22,
+      price: '$22',
     },
   ],
   Desserts: [
     {
       name: 'Chocolate Tart',
       description: 'Dark chocolate, sea salt, vanilla cream.',
-      price: 11,
+      price: '$11',
     },
     {
       name: 'Olive Oil Cake',
-      description: 'Citrus zest, almond, light cream.',
-      price: 10,
+      description: 'Citrus, whipped cream, and toasted almond.',
+      price: '$10',
     },
     {
-      name: 'Poached Pear',
-      description: 'Vanilla, honey, toasted walnuts.',
-      price: 12,
+      name: 'Vanilla Panna Cotta',
+      description: 'Vanilla bean with a little seasonal fruit.',
+      price: '$9',
     },
     {
       name: 'Affogato',
       description: 'Espresso poured over vanilla gelato.',
-      price: 8,
+      price: '$8',
     },
   ],
   Drinks: [
     {
-      name: 'House Lemonade',
-      description: 'Lemon, thyme, sparkling water.',
-      price: 6,
+      name: 'House Spritz',
+      description: 'Citrus, sparkling wine, and herbs.',
+      price: '$13',
     },
     {
-      name: 'Seasonal Spritz',
-      description: 'Citrus, herbs, sparkling wine.',
-      price: 12,
-    },
-    {
-      name: 'Still or Sparkling Water',
-      description: 'Served chilled.',
-      price: 5,
+      name: 'Evening Red',
+      description: 'A glass of the pour we are opening tonight.',
+      price: '$14',
     },
     {
       name: 'Espresso',
-      description: 'Short, dark, and simple.',
-      price: 4,
+      description: 'Short, rich, and simply made.',
+      price: '$4',
+    },
+    {
+      name: 'Seasonal Lemonade',
+      description: 'Fresh lemon with a little honey.',
+      price: '$6',
+    },
+    {
+      name: 'Sparkling Water',
+      description: 'Chilled, with a slice of citrus.',
+      price: '$4',
     },
   ],
 }
 
-export type GalleryImage = {
-  id: string
-  src: string
-  alt: string
-}
-
-export const galleryImages: GalleryImage[] = [
+export const galleryImages = [
   {
-    id: 'shared-table',
-    src: photo('1504674900247-0877df9cc836', 1800),
-    alt: 'Seasonal dishes arranged on a shared table',
+    src: photo('photo-1504674900247-0877df9cc836', 1600),
+    alt: 'Sharing plates arranged on the table',
   },
   {
-    id: 'dining-room',
-    src: photo('1559339352-11d035aa65de', 1800),
-    alt: 'Tables set on a quiet open-air terrace',
+    src: photo('photo-1540189549336-e6e99c3679fe', 1200),
+    alt: 'A fresh salad with herbs and citrus',
   },
   {
-    id: 'fresh-bowl',
-    src: photo('1540189549336-e6e99c3679fe', 1400),
-    alt: 'A colorful bowl of fresh ingredients',
+    src: photo('photo-1600891964092-4316c288032e', 1200),
+    alt: 'Sliced steak with crisp potatoes',
   },
   {
-    id: 'tomatoes',
-    src: photo('1608897013039-887f21d8c804', 1400),
-    alt: 'Tomato pasta with basil and fresh herbs',
+    src: photo('photo-1488477181946-6428a0291777', 1600),
+    alt: 'Vanilla cream desserts with strawberries',
   },
   {
-    id: 'dessert',
-    src: photo('1565958011703-44f9829ba187', 1600),
-    alt: 'A berry dessert finished with cream',
+    src: photo('photo-1551218808-94e220e084d2', 1400),
+    alt: 'Fresh ingredients being prepared in the kitchen',
   },
   {
-    id: 'pasta',
-    src: photo('1473093295043-cdd812d0e601', 1600),
-    alt: 'A bowl of fresh pasta',
+    src: photo('photo-1519708227418-c8fd9a32b7a2', 1200),
+    alt: 'Seared salmon with seasonal vegetables',
   },
-]
-
-export const galleryFrames = [
-  'col-span-2 row-span-2',
-  'col-span-2',
-  'col-span-1',
-  'col-span-1',
-  'col-span-2',
-  'col-span-2',
 ] as const
 
-export type Testimonial = {
-  quote: string
-  name: string
-}
-
-export const testimonials: Testimonial[] = [
+export const testimonials = [
   {
     quote: 'Beautiful food, warm atmosphere, and incredibly thoughtful service.',
     name: 'Olivia M.',
@@ -236,30 +178,29 @@ export const testimonials: Testimonial[] = [
     quote: 'The perfect spot for a relaxed dinner.',
     name: 'Sophia K.',
   },
-]
+] as const
 
-function buildReservationTimes() {
-  const times: string[] = []
+export const reservationTimes = [
+  '11:30 AM',
+  '12:00 PM',
+  '12:30 PM',
+  '1:00 PM',
+  '1:30 PM',
+  '2:00 PM',
+  '5:00 PM',
+  '5:30 PM',
+  '6:00 PM',
+  '6:30 PM',
+  '7:00 PM',
+  '7:30 PM',
+  '8:00 PM',
+  '8:30 PM',
+  '9:00 PM',
+  '9:30 PM',
+] as const
 
-  for (let minutes = 11 * 60 + 30; minutes <= 21 * 60 + 30; minutes += 30) {
-    const hour24 = Math.floor(minutes / 60)
-    const mins = minutes % 60
-    const suffix = hour24 >= 12 ? 'PM' : 'AM'
-    const hour12 = hour24 % 12 === 0 ? 12 : hour24 % 12
-    times.push(`${hour12}:${mins.toString().padStart(2, '0')} ${suffix}`)
-  }
-
-  return times
-}
-
-export const reservationTimes = buildReservationTimes()
-
-export function formatPrice(price: number) {
-  return `$${price}`
-}
-
-export function todayInputValue() {
-  const now = new Date()
-  const local = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
-  return local.toISOString().slice(0, 10)
+export const images = {
+  hero: photo('photo-1414235077428-338989a2e8c0', 1800),
+  about: photo('photo-1517248135467-4c7edcad34c4', 1600),
+  experience: photo('photo-1550966871-3ed3cdb5ed0c', 2000),
 }

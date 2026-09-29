@@ -12,11 +12,11 @@ import { Testimonials } from './components/Testimonials'
 export default function App() {
   return (
     <>
-      <a href="#home" className="skip-link">
+      <a className="skip-link" href="#main">
         Skip to content
       </a>
       <Navbar />
-      <main>
+      <main id="main">
         <Hero />
         <FeaturedDishes />
         <About />
