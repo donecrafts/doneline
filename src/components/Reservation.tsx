@@ -1,6 +1,15 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
+import { useAuth } from '../auth/AuthContext'
 import { reservationTimes } from '../data/content'
+import { supabase } from '../lib/supabase'
 import { Reveal } from './Reveal'
+
+type SavedRequest = {
+  id: string
+  reservation_date: string
+  reservation_time: string
+  guests: number
+}
 
 function todayISO() {
   const now = new Date()
@@ -9,19 +18,89 @@ function todayISO() {
 }
 
 export function Reservation() {
+  const { user, configured, openAuth } = useAuth()
   const [submitted, setSubmitted] = useState(false)
+  const [pending, setPending] = useState(false)
+  const [error, setError] = useState('')
+  const [requests, setRequests] = useState<SavedRequest[]>([])
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    if (!user || !supabase) {
+      setRequests([])
+      return
+    }
+
+    let active = true
+
+    supabase
+      .from('reservations')
+      .select('id, reservation_date, reservation_time, guests')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
+      .then(({ data, error: loadError }) => {
+        if (!active || loadError) return
+        setRequests((data ?? []) as SavedRequest[])
+      })
+
+    return () => {
+      active = false
+    }
+  }, [user, submitted])
+
+  useEffect(() => {
+    if (!user) return
+    const savedName = typeof user.user_metadata?.full_name === 'string' ? user.user_metadata.full_name : ''
+    setName((current) => current || savedName)
+    setEmail((current) => current || user.email || '')
+  }, [user])
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    const form = event.currentTarget
+    setError('')
+    setSubmitted(false)
 
+    const form = event.currentTarget
     if (!form.checkValidity()) {
       form.reportValidity()
       return
     }
 
+    if (!configured || !supabase) {
+      setError('Supabase is not configured yet, so this request cannot be saved.')
+      return
+    }
+
+    if (!user) {
+      openAuth('sign-in')
+      return
+    }
+
+    const data = new FormData(form)
+    setPending(true)
+
+    const { error: insertError } = await supabase.from('reservations').insert({
+      user_id: user.id,
+      name,
+      email,
+      reservation_date: String(data.get('date') ?? ''),
+      reservation_time: String(data.get('time') ?? ''),
+      guests: Number(data.get('guests')),
+      message: String(data.get('message') ?? '') || null,
+    })
+
+    setPending(false)
+
+    if (insertError) {
+      setError(insertError.message)
+      return
+    }
+
     setSubmitted(true)
     form.reset()
+    setName(typeof user.user_metadata?.full_name === 'string' ? user.user_metadata.full_name : '')
+    setEmail(user.email ?? '')
   }
 
   return (
@@ -62,15 +141,29 @@ export function Reservation() {
               </div>
             </div>
 
-            <form className="reserve-form" onSubmit={onSubmit} noValidate={false}>
+            <form className="reserve-form" onSubmit={onSubmit}>
               <div className="form-grid">
                 <label className="field">
                   <span>Name</span>
-                  <input name="name" type="text" autoComplete="name" required />
+                  <input
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    required
+                  />
                 </label>
                 <label className="field">
                   <span>Email</span>
-                  <input name="email" type="email" autoComplete="email" required />
+                  <input
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    required
+                  />
                 </label>
                 <div className="form-row">
                   <label className="field">
@@ -111,13 +204,26 @@ export function Reservation() {
               </div>
 
               <div className="form-status" aria-live="polite">
+                {!user ? <p className="form-note">Sign in to send your reservation request.</p> : null}
                 {submitted ? (
                   <p className="form-success">Thank you! Your reservation request has been received.</p>
                 ) : null}
+                {error ? <p className="auth-error">{error}</p> : null}
               </div>
 
-              <button className="btn btn-primary" type="submit">
-                Request a Table
+              {requests.length > 0 ? (
+                <ul className="request-list">
+                  {requests.map((request) => (
+                    <li key={request.id}>
+                      {request.reservation_date} · {request.reservation_time} · {request.guests}{' '}
+                      {request.guests === 1 ? 'guest' : 'guests'}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+
+              <button className="btn btn-primary" type="submit" disabled={pending}>
+                {pending ? 'Sending…' : user ? 'Request a Table' : 'Sign in to request'}
               </button>
             </form>
           </div>
